@@ -43,30 +43,151 @@
   shape-rendering: crispEdges;
 }
 
+.bg-div {
+  background-color: white !important;
+  padding: 5px !important;
+  border-style: solid !important;
+  border-color: #999 !important;
+  border-width: 1px !important;
+  margin: 5px !important;
+}
+
+body {
+  font-family: 'Cantarell', sans-serif !important;
+  background-color: #e3e4e5 !important;
+}
+
+label {
+  font-weight: 400 !important;
+  font-color: #212121;
+}
+
+ul {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
 </style>
+<link href='https://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
 <body  onload="barChart()">
 <div class="containter">
   <div class="row">
-    <div class="col-md-4">
-      <br><br><br>
-      <p id="bars"></p>
+    <div class="col-md-3 nopadding">
+      <br><br>
+      <div class="bg-div"><p id="bars"></p></div>
     </div>
-    <div class="col-md-6">
-      <p id="chart"></p>
+    <div class="col-md-6 nopadding">
+      <br><br>
+      <div class="bg-div"><div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
     </div>
-    <div class="col-md-2">
-      <h4>Academic Field</h4>
+    <div class="col-md-3 nopadding">
+      <br><br>
+      <div class="bg-div"><h4>Academic Field</h4>
       <ul id="filters">
+
+
+
         <li>
-          <input type="checkbox" value="HCI" id="filter-a"><label for="filter-a">&nbsp;HCI</label>
+          <input type="checkbox" value="Bioinformatics & Computational Biology" id="a"><label for="a">Bioinformatics & Computational Biology</label>
         </li>
+
         <li>
-          <input type="checkbox" value="AI" id="filter-b"><label for="filter-b">&nbsp;AI</label>
+          <input type="checkbox" value="Data Mining" id="b"><label for="b">Data Mining</label>
         </li>
+
         <li>
-          <input type="checkbox" value="Distributed" id="filter-c"><label for="filter-c">&nbsp;Distributed</label>
+          <input type="checkbox" value="Machine Learning & Pattern Recognition" id="c"><label for="c">Machine Learning & Pattern Recognition</label>
         </li>
+
+        <li>
+          <input type="checkbox" value="Scientific Computing" id="d"><label for="d">Scientific Computing</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Security & Privacy" id="e"><label for="e">Security & Privacy</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="" id="f"><label for="f">Human-Computer Interaction</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Algorithms & Theory" id="g"><label for="g">Algorithms & Theory</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Computer Education" id="h"><label for="h">Computer Education</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Distributed & Parallel Computing" id="i"><label for="i">Distributed & Parallel Computing</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="" id="j"><label for="j">Real-Time & Embedded Systems</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Programming Languages" id="k"><label for="k">Programming Languages</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Artificial Intelligence" id="a"><label for="l">Artificial Intelligence</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Information Retrieval" id="m"><label for="m">Information Retrieval</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Networks & Communications" id="n"><label for="n">Networks & Communications</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Hardware & Architecture" id="o"><label for="o">Hardware & Architecture</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Operating Systems" id="p"><label for="p">Operating Systems</label>
+        </li>
+
+        <li>
+          <input type="checkbox" value="Software Engineering" id="q"><label for="q">Software Engineering</label>
+        </li>
+
+
+        <li>
+          <input type="checkbox" value="Computer Vision" id="r"><label for="r">Computer Vision</label>
+        </li>
+
+
+        <li>
+          <input type="checkbox" value="Multimedia" id="s"><label for="s">Multimedia</label>
+        </li>
+
+
+        <li>
+          <input type="checkbox" value="Natural Language & Speech" id="t"><label for="t">Natural Language & Speech</label>
+        </li>
+
+
+        <li>
+          <input type="checkbox" value="Databases" id="u"><label for="u">Databases</label>
+        </li>
+
+
+        <li>
+          <input type="checkbox" value="Graphics" id="v"><label for="v">Graphics</label>
+        </li>
+
       </ul>
+
+    </div>
     </div>
   </div>
 </div>
@@ -94,7 +215,7 @@ var units = "Widgets";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 600 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    height = 5000 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
@@ -151,18 +272,27 @@ var renderWithFilter = function(filters) {
 
 
 
-  d3.csv("sankey.csv", function(error, data) {
+  d3.csv("prof_data.csv", function(error, data) {
 
     //set up graph in same style as original example but empty
     graph = {"nodes" : [], "links" : []};
+    var fields = []
 
       data.forEach(function (d) {
+
+        //console.log(JSON.stringify(d));
 
         var sourceSplit = d.source.split("_");
         var sourceName = sourceSplit[0] + sourceSplit[2];
 
         var targetSplit = d.target.split("_");
         var targetName = targetSplit[0] + targetSplit[2];
+
+        var field = targetSplit[1];
+        if(!fields.contains(field)) {
+          fields.push(field);
+          console.log(JSON.stringify(fields));
+        }
 
         if(!filters.contains(sourceSplit[1]))
           return;
@@ -253,8 +383,8 @@ var renderWithFilter = function(filters) {
         .attr("width", sankey.nodeWidth())
         .style("fill", function(d) { 
         return d.color = color(d.name.replace(/ .*/, "")); })
-        .style("stroke", function(d) { 
-        return d3.rgb(d.color).darker(2); })
+        //.style("stroke", function(d) { 
+        //return d3.rgb(216,216,216) })
       .append("title")
         .text(function(d) { 
         return d.name + "\n" + format(d.value); });
@@ -266,7 +396,15 @@ var renderWithFilter = function(filters) {
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
         .attr("transform", null)
-        .text(function(d) { /*console.log(JSON.stringify(d));*/ return d.name})//.substring(2, d.name.length); })
+        .text(
+          function(d) { 
+            var name = d.name.substring(1, d.name.length);
+            name = name.replace("University", "");
+            name = name.replace("of", "");
+            name = name.replace("State", "");
+            name = name.trim();
+            return name;
+          })
       .filter(function(d) { return d.x < width / 2; })
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
@@ -289,9 +427,12 @@ renderWithFilter([]);
 
 function barChart(){
 
-  var bwidth = 350;
+  var bwidth = 250;
+  var bheight = 400;
+
   margin.top = 50;
   margin.bottom = 50;
+
 
   var dat = [{field: "AI", count: 10}, {field: "HCI", count: 5}, {field: "Distributed", count: 15}];
 
@@ -299,7 +440,7 @@ function barChart(){
       .rangeRoundBands([0, bwidth], .8);
 
   var y = d3.scale.linear()
-      .range([height, 0]);
+      .range([bheight, 0]);
 
   var xAxis = d3.svg.axis()
       .scale(x)
@@ -312,7 +453,7 @@ function barChart(){
 
   var svg = d3.select("#bars").append("svg:svg")
               .attr("width", bwidth)
-              .attr("height", height)
+              .attr("height", bheight)
               .append("svg:g")
               .attr("transform", "translate(" + (margin.left+30) + "," + (-margin.bottom-10) + ")");
 
@@ -321,7 +462,7 @@ function barChart(){
 
   svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + (height) + ")")
+        .attr("transform", "translate(0," + (bheight) + ")")
         .call(xAxis)
         .selectAll("text")
         .style("text-anchor", "end")
@@ -342,7 +483,7 @@ function barChart(){
       //x-axis label
     svg.append("text")      
       .attr("x", bwidth - 50)
-      .attr("y",  height )
+      .attr("y",  bheight )
       .style("text-anchor", "middle")
       .attr("class", "axis")
       .text("Field");
@@ -355,7 +496,7 @@ function barChart(){
       .attr("x", function(d) { return x(d.field); })
       .attr("width", 20)
       .attr("y", function(d) { return y(d.count); })
-      .attr("height", function(d) { return height - y(d.count); });
+      .attr("height", function(d) { return bheight - y(d.count); });
 }
 
 </script>
