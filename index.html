@@ -64,6 +64,7 @@ body {
 label {
   font-weight: 400 !important;
   font-color: #212121;
+  font-size: 10pt !important;
 }
 
 ul {
@@ -82,7 +83,7 @@ ul {
 
 <link rel="stylesheet" type="text/css" href="checkbox.css">
 <link href='https://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
-<body  onload="barChart()">
+
 <div class="containter">
   <div class="row">
     <div class="col-md-3 nopadding">
@@ -359,13 +360,15 @@ renderWithFilter([]);
 
 var renderBarChart = function(filters)
 {
+    var bwidth = 400;
+      var bheight = 400;
 	$("#bars").empty();
-	svg = d3.select("#bars").append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
+	/*svg = d3.select("#bars").append("svg")
+		.attr("width", bwidth + margin.left + margin.right)
+		.attr("height", bheight + margin.top + margin.bottom)
 	  .append("g")
 		.attr("transform", 
-			  "translate(" + margin.left + "," + margin.top + ")");
+			  "translate(" + margin.left + "," + margin.top + ")");*/
 
 	var bar_data = [];
 	var bar_dict = {};
@@ -419,9 +422,10 @@ var renderBarChart = function(filters)
 		function barChart(dat)
 		{
 			console.log(JSON.stringify(dat));
-			var bwidth = 350;
+			var bwidth = 400;
+      var bheight = 500;
 			margin.top = 50;
-			margin.bottom = 50;
+			margin.bottom = 150;
 
 			var color = d3.scale.ordinal()
 				.range(["#f2767f","#dd6ca8","#9e68ab","#4188c8","#31b99b","#93c43d","#e7cf1b","#f1a31e","#ee6c24","#ef5337","#ce1f35","#552a7d","#184784"])
@@ -430,7 +434,7 @@ var renderBarChart = function(filters)
 				.rangeRoundBands([0, bwidth], .8);
 
 			var y = d3.scale.linear()
-				.range([height, 0]);
+				.range([bheight, 0]);
 
 			var xAxis = d3.svg.axis()
 				.scale(x)
@@ -443,7 +447,7 @@ var renderBarChart = function(filters)
 
 			var svg = d3.select("#bars").append("svg:svg")
 				.attr("width", bwidth)
-				.attr("height", height)
+				.attr("height", bheight)
 				.append("svg:g")
 				.attr("transform", "translate(" + (margin.left+30) + "," + (-margin.bottom-10) + ")");
 
@@ -452,7 +456,7 @@ var renderBarChart = function(filters)
 
 			svg.append("g")
 				.attr("class", "x axis")
-				.attr("transform", "translate(0," + (height) + ")")
+				.attr("transform", "translate(0," + (bheight) + ")")
 				.call(xAxis)
 				.selectAll("text")
 				.style("text-anchor", "end")
@@ -473,7 +477,7 @@ var renderBarChart = function(filters)
 			//x-axis label
 			svg.append("text")      
 				.attr("x", bwidth - 50)
-				.attr("y",  height )
+				.attr("y",  bheight )
 				.style("text-anchor", "middle")
 				.attr("class", "axis")
 				.text("Field");
@@ -486,7 +490,7 @@ var renderBarChart = function(filters)
 				.attr("x", function(d) { return x(d.field); })
 				.attr("width", 20)
 				.attr("y", function(d) { return y(d.count); })
-				.attr("height", function(d) { return height - y(d.count); });
+				.attr("height", function(d) { return bheight - y(d.count); });
 		}
 
 		barChart(bar_data);
