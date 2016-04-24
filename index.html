@@ -24,31 +24,60 @@
   stroke-opacity: .5;
 }
 
+#filters > li {
+  list-style-type: none;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
 </style>
-<body>
-
-<ul id="filters">
-  <li>
-    <input type="checkbox" value="HCI" id="filter-a"><label for="filter-a">HCI</label>
-  </li>
-
-  <li>
-    <input type="checkbox" value="AI" id="filter-b"><label for="filter-b">AI</label>
-  </li>
-
-  <li>
-    <input type="checkbox" value="Distributed" id="filter-c"><label for="filter-c">Distributed</label>
-  </li>
-</ul>
-
-<p id="chart"></p>
-<p id="bars"></p>
+<body  onload="barChart()">
+<div class="containter">
+  <div class="row">
+    <div class="col-md-4">
+      <br><br><br>
+      <p id="bars"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart"></p>
+    </div>
+    <div class="col-md-2">
+      <h4>Academic Field</h4>
+      <ul id="filters">
+        <li>
+          <input type="checkbox" value="HCI" id="filter-a"><label for="filter-a">&nbsp;HCI</label>
+        </li>
+        <li>
+          <input type="checkbox" value="AI" id="filter-b"><label for="filter-b">&nbsp;AI</label>
+        </li>
+        <li>
+          <input type="checkbox" value="Distributed" id="filter-c"><label for="filter-c">&nbsp;Distributed</label>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-2.2.3.min.js"
         integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
         crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="sankey.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script>
   
 Array.prototype.contains = function(obj) {
@@ -64,7 +93,7 @@ Array.prototype.contains = function(obj) {
 var units = "Widgets";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 700 - margin.left - margin.right,
+    width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
@@ -256,6 +285,77 @@ var renderWithFilter = function(filters) {
 
 
 renderWithFilter([]);
+
+
+function barChart(){
+  var bwidth = 350;
+  margin.top = 50;
+  margin.bottom = 50;
+
+  var dat = [{field: "AI", count: 10}, {field: "HCI", count: 5}, {field: "Distributed", count: 15}];
+
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, bwidth], .8);
+
+  var y = d3.scale.linear()
+      .range([height, 0]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .ticks(7);
+
+  var svg = d3.select("#bars").append("svg:svg")
+              .attr("width", bwidth)
+              .attr("height", height)
+              .append("svg:g")
+              .attr("transform", "translate(" + (margin.left+30) + "," + (-margin.bottom-10) + ")");
+
+  x.domain(dat.map(function(d){return d.field}));
+  y.domain([0, d3.max(dat, function(d) { return d.count; })]);
+
+  svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + (height) + ")")
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", "-.55em")
+        .attr("transform", "rotate(-75)" );
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Total Number");
+
+      //x-axis label
+    svg.append("text")      
+      .attr("x", bwidth - 50)
+      .attr("y",  height )
+      .style("text-anchor", "middle")
+      .attr("class", "axis")
+      .text("Field");
+
+    svg.selectAll(".bar")
+      .data(dat)
+    .enter().append("rect")
+      .style("fill", function(d,i) { return color(i)})
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.field); })
+      .attr("width", 20)
+      .attr("y", function(d) { return y(d.count); })
+      .attr("height", function(d) { return height - y(d.count); });
+}
 
 </script>
 
