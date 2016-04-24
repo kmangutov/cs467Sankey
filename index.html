@@ -119,7 +119,7 @@ $(document).ready(function() {
     $("#filters :checkbox:checked").each(function() {
        filters.push($(this).val());
     });
-    console.log(JSON.stringify(filters));
+    //console.log(JSON.stringify(filters));
     renderWithFilter(filters);
   });
 
@@ -224,7 +224,7 @@ var renderWithFilter = function(filters) {
         var field = targetSplit[1];
         if(!fields.contains(field)) {
           fields.push(field);
-          console.log(JSON.stringify(fields));
+          //console.log(JSON.stringify(fields));
         }
 
         if(!filters.contains(sourceSplit[1]))
@@ -257,7 +257,7 @@ var renderWithFilter = function(filters) {
                            "value": + val + parseInt(d.value) });
 
 
-        console.log(JSON.stringify(graph.links));
+        //console.log(JSON.stringify(graph.links));
       });
 
        // return only the distinct / unique nodes
@@ -357,80 +357,143 @@ var renderWithFilter = function(filters) {
 
 renderWithFilter([]);
 
+var renderBarChart = function(filters)
+{
+	$("#bars").empty();
+	svg = d3.select("#bars").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+		.attr("transform", 
+			  "translate(" + margin.left + "," + margin.top + ")");
 
-function barChart(){
+	var bar_data = [];
+	var bar_dict = {};
 
-  var bwidth = 250;
-  var bheight = 400;
+	d3.csv("prof_data.csv", function(error, data)
+	{
+		var fields = ["Bioinformatics & Computational Biology",
+					"Data Mining",
+					"Machine Learning & Pattern Recognition",
+					"Scientific Computing",
+					"Security & Privacy",
+					"Human-Computer Interaction",
+					"Algorithms & Theory",
+					"Computer Education",
+					"Distributed & Parallel Computing",
+					"Real-Time & Embedded Systems",
+					"Programming Languages",
+					"Artificial Intelligence",
+					"Information Retrieval",
+					"Networks & Communications",
+					"Hardware & Architecture",
+					"Operating Systems",
+					"Software Engineering",
+					"Computer Vision",
+					"Multimedia",
+					"Natural Language & Speech",
+					"Databases",
+					"Graphics"]
 
-  margin.top = 50;
-  margin.bottom = 50;
+		for (i = 0; i < fields.length; i++)
+		{
+			bar_dict[fields[i]] = 0;
+		}
 
+		data.forEach(function (d)
+		{
+			var targetSplit = d.target.split("_");
 
-  var dat = [{field: "AI", count: 10}, {field: "HCI", count: 5}, {field: "Distributed", count: 15}];
+			if (targetSplit[0] === "2")
+			{
+				bar_dict[targetSplit[1]] += 1;
+			}
+		});
 
-  var x = d3.scale.ordinal()
-      .rangeRoundBands([0, bwidth], .8);
+		for (var key in bar_dict)
+		{
+			var element = {field: key, count: bar_dict[key]};
+			bar_data.push(element);
+		}
 
-  var y = d3.scale.linear()
-      .range([bheight, 0]);
+		function barChart(dat)
+		{
+			console.log(JSON.stringify(dat));
+			var bwidth = 350;
+			margin.top = 50;
+			margin.bottom = 50;
 
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+			var color = d3.scale.ordinal()
+				.range(["#f2767f","#dd6ca8","#9e68ab","#4188c8","#31b99b","#93c43d","#e7cf1b","#f1a31e","#ee6c24","#ef5337","#ce1f35","#552a7d","#184784"])
 
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .ticks(7);
+			var x = d3.scale.ordinal()
+				.rangeRoundBands([0, bwidth], .8);
 
-  var svg = d3.select("#bars").append("svg:svg")
-              .attr("width", bwidth)
-              .attr("height", bheight)
-              .append("svg:g")
-              .attr("transform", "translate(" + (margin.left+30) + "," + (-margin.bottom-10) + ")");
+			var y = d3.scale.linear()
+				.range([height, 0]);
 
-  x.domain(dat.map(function(d){return d.field}));
-  y.domain([0, d3.max(dat, function(d) { return d.count; })]);
+			var xAxis = d3.svg.axis()
+				.scale(x)
+				.orient("bottom");
 
-  svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + (bheight) + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", "-.55em")
-        .attr("transform", "rotate(-75)" );
+			var yAxis = d3.svg.axis()
+				.scale(y)
+				.orient("left")
+				.ticks(7);
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Total Number");
+			var svg = d3.select("#bars").append("svg:svg")
+				.attr("width", bwidth)
+				.attr("height", height)
+				.append("svg:g")
+				.attr("transform", "translate(" + (margin.left+30) + "," + (-margin.bottom-10) + ")");
 
-      //x-axis label
-    svg.append("text")      
-      .attr("x", bwidth - 50)
-      .attr("y",  bheight )
-      .style("text-anchor", "middle")
-      .attr("class", "axis")
-      .text("Field");
+			x.domain(dat.map(function(d){return d.field}));
+			y.domain([0, d3.max(dat, function(d) { return d.count; })]);
 
-    svg.selectAll(".bar")
-      .data(dat)
-    .enter().append("rect")
-      .style("fill", function(d,i) { return color(i)})
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.field); })
-      .attr("width", 20)
-      .attr("y", function(d) { return y(d.count); })
-      .attr("height", function(d) { return bheight - y(d.count); });
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + (height) + ")")
+				.call(xAxis)
+				.selectAll("text")
+				.style("text-anchor", "end")
+				.attr("dx", "-.8em")
+				.attr("dy", "-.55em")
+				.attr("transform", "rotate(-75)" );
+
+			svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis)
+			  .append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", 6)
+				.attr("dy", ".71em")
+				.style("text-anchor", "end")
+				.text("Total Number");
+
+			//x-axis label
+			svg.append("text")      
+				.attr("x", bwidth - 50)
+				.attr("y",  height )
+				.style("text-anchor", "middle")
+				.attr("class", "axis")
+				.text("Field");
+
+			svg.selectAll(".bar")
+				.data(dat)
+			  .enter().append("rect")
+				.style("fill", function(d,i) { return color(i)})
+				.attr("class", "bar")
+				.attr("x", function(d) { return x(d.field); })
+				.attr("width", 20)
+				.attr("y", function(d) { return y(d.count); })
+				.attr("height", function(d) { return height - y(d.count); });
+		}
+
+		barChart(bar_data);
+	});
 }
+
+renderBarChart([])
 
 </script>
 
