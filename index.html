@@ -73,6 +73,9 @@ ul {
 }
 
 </style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="checkbox.css">
 <link href='https://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
 <body  onload="barChart()">
 <div class="containter">
@@ -88,103 +91,37 @@ ul {
     <div class="col-md-3 nopadding">
       <br><br>
       <div class="bg-div"><h4>Academic Field</h4>
+
+<script
+        src="https://code.jquery.com/jquery-2.2.3.min.js"
+        integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+        crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function() {
+
+  var fields = ["Bioinformatics & Computational Biology","Data Mining","Machine Learning & Pattern Recognition","Scientific Computing","Security & Privacy","Human-Computer Interaction","Algorithms & Theory","Computer Education","Distributed & Parallel Computing","Real-Time & Embedded Systems","Programming Languages","Artificial Intelligence","Information Retrieval","Networks & Communications","Hardware & Architecture","Operating Systems","Software Engineering","Computer Vision","Multimedia","Natural Language & Speech","Databases","Graphics"];
+
+  var counter = 0;
+  fields.forEach(function f(name) {
+    $("#filters").append("<li><div class='checkbox'><input type='checkbox' id='a" + counter + "' value='" + name + "'><label for='a" + counter++ + "'>" + name + "</label></div></li>");
+  });
+
+
+  $("#filters :checkbox").click(function() {
+
+    var filters = [];
+    $("#filters :checkbox:checked").each(function() {
+       filters.push($(this).val());
+    });
+    console.log(JSON.stringify(filters));
+    renderWithFilter(filters);
+  });
+
+});
+</script>
+
       <ul id="filters">
-
-
-
-        <li>
-          <input type="checkbox" value="Bioinformatics & Computational Biology" id="a"><label for="a">Bioinformatics & Computational Biology</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Data Mining" id="b"><label for="b">Data Mining</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Machine Learning & Pattern Recognition" id="c"><label for="c">Machine Learning & Pattern Recognition</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Scientific Computing" id="d"><label for="d">Scientific Computing</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Security & Privacy" id="e"><label for="e">Security & Privacy</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="" id="f"><label for="f">Human-Computer Interaction</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Algorithms & Theory" id="g"><label for="g">Algorithms & Theory</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Computer Education" id="h"><label for="h">Computer Education</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Distributed & Parallel Computing" id="i"><label for="i">Distributed & Parallel Computing</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="" id="j"><label for="j">Real-Time & Embedded Systems</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Programming Languages" id="k"><label for="k">Programming Languages</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Artificial Intelligence" id="a"><label for="l">Artificial Intelligence</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Information Retrieval" id="m"><label for="m">Information Retrieval</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Networks & Communications" id="n"><label for="n">Networks & Communications</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Hardware & Architecture" id="o"><label for="o">Hardware & Architecture</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Operating Systems" id="p"><label for="p">Operating Systems</label>
-        </li>
-
-        <li>
-          <input type="checkbox" value="Software Engineering" id="q"><label for="q">Software Engineering</label>
-        </li>
-
-
-        <li>
-          <input type="checkbox" value="Computer Vision" id="r"><label for="r">Computer Vision</label>
-        </li>
-
-
-        <li>
-          <input type="checkbox" value="Multimedia" id="s"><label for="s">Multimedia</label>
-        </li>
-
-
-        <li>
-          <input type="checkbox" value="Natural Language & Speech" id="t"><label for="t">Natural Language & Speech</label>
-        </li>
-
-
-        <li>
-          <input type="checkbox" value="Databases" id="u"><label for="u">Databases</label>
-        </li>
-
-
-        <li>
-          <input type="checkbox" value="Graphics" id="v"><label for="v">Graphics</label>
-        </li>
-
       </ul>
 
     </div>
@@ -239,15 +176,6 @@ var path = sankey.link();
 
 // load the data (using the timelyportfolio csv method)
 
-$("#filters :checkbox").click(function() {
-
-  var filters = [];
-  $("#filters :checkbox:checked").each(function() {
-     filters.push($(this).val());
-  });
-  console.log(JSON.stringify(filters));
-  renderWithFilter(filters);
-});
 
 
 
