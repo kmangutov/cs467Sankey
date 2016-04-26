@@ -103,9 +103,32 @@ ul {
         crossorigin="anonymous"></script>
 
 <script>
+
+var fields = ["Algorithms & Theory",
+				"Artificial Intelligence",
+				"Bioinformatics & Computational Biology",
+				"Computer Education",
+				"Computer Vision",
+				"Data Mining",
+				"Databases",
+				"Distributed & Parallel Computing",
+				"Graphics",
+				"Hardware & Architecture",
+				"Human-Computer Interaction",
+				"Information Retrieval",
+				"Machine Learning & Pattern Recognition",
+				"Multimedia",
+				"Natural Language & Speech",
+				"Networks & Communications",
+				"Operating Systems",
+				"Programming Languages",
+				"Real-Time & Embedded Systems",
+				"Scientific Computing",
+				"Security & Privacy",
+				"Software Engineering"];
+				
 $(document).ready(function() {
 
-  var fields = ["Bioinformatics & Computational Biology","Data Mining","Machine Learning & Pattern Recognition","Scientific Computing","Security & Privacy","Human-Computer Interaction","Algorithms & Theory","Computer Education","Distributed & Parallel Computing","Real-Time & Embedded Systems","Programming Languages","Artificial Intelligence","Information Retrieval","Networks & Communications","Hardware & Architecture","Operating Systems","Software Engineering","Computer Vision","Multimedia","Natural Language & Speech","Databases","Graphics"];
 
   var counter = 0;
   fields.forEach(function f(name) {
@@ -374,29 +397,6 @@ var renderBarChart = function(filters)
 
 	d3.csv("prof_data.csv", function(error, data)
 	{
-		var fields = ["Bioinformatics & Computational Biology",
-					"Data Mining",
-					"Machine Learning & Pattern Recognition",
-					"Scientific Computing",
-					"Security & Privacy",
-					"Human-Computer Interaction",
-					"Algorithms & Theory",
-					"Computer Education",
-					"Distributed & Parallel Computing",
-					"Real-Time & Embedded Systems",
-					"Programming Languages",
-					"Artificial Intelligence",
-					"Information Retrieval",
-					"Networks & Communications",
-					"Hardware & Architecture",
-					"Operating Systems",
-					"Software Engineering",
-					"Computer Vision",
-					"Multimedia",
-					"Natural Language & Speech",
-					"Databases",
-					"Graphics"]
-
 		for (i = 0; i < fields.length; i++)
 		{
 			bar_dict[fields[i]] = 0;
