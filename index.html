@@ -86,18 +86,17 @@ ul {
 
 <div class="containter">
   <div class="row">
-    <div class="col-md-3 nopadding">
+    <div class="col-sm-12 col-md-3 nopadding">
       <br><br>
-      <div class="bg-div"><h4>Field Distribution</h4><p id="bars"></p></div>
+      <div class="bg-div"><h4 style="padding-left: 10px">Field Distribution</h4><p id="bars"></p></div>
     </div>
-    <div class="col-md-6 nopadding">
+    <div class="col-sm-12 col-md-6 nopadding">
       <br><br>
       <div class="bg-div"><h4>Academic Career Track</h4><div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
     </div>
-    <div class="col-md-3 nopadding">
+    <div class="col-sm-12 col-md-3 nopadding">
       <br><br>
       <div class="bg-div"><h4>Academic Field</h4>
-
 <script
         src="https://code.jquery.com/jquery-2.2.3.min.js"
         integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
@@ -361,7 +360,7 @@ renderWithFilter([]);
 var renderBarChart = function(filters)
 {
     var bwidth = 400;
-      var bheight = 400;
+    var bheight = 400;
 	$("#bars").empty();
 	/*svg = d3.select("#bars").append("svg")
 		.attr("width", bwidth + margin.left + margin.right)
@@ -422,19 +421,26 @@ var renderBarChart = function(filters)
 		function barChart(dat)
 		{
 			console.log(JSON.stringify(dat));
-			var bwidth = 400;
+      var windowWidth = window.innerWidth
+          || document.documentElement.clientWidth
+          || document.body.clientWidth;
+          console.log(windowWidth*.25);
+			
       var bheight = 500;
-			margin.top = 50;
-			margin.bottom = 150;
+			margin.top = 0;
+			margin.bottom = 200;
+      margin.right = 15;
+      margin.left = 5;
+      var bwidth = windowWidth*.25 - margin.right;
 
 			var color = d3.scale.ordinal()
 				.range(["#f2767f","#dd6ca8","#9e68ab","#4188c8","#31b99b","#93c43d","#e7cf1b","#f1a31e","#ee6c24","#ef5337","#ce1f35","#552a7d","#184784"])
 
 			var x = d3.scale.ordinal()
-				.rangeRoundBands([0, bwidth], .8);
+				.rangeRoundBands([margin.left, bwidth], 0);
 
 			var y = d3.scale.linear()
-				.range([bheight, 0]);
+				.range([bheight, margin.bottom]);
 
 			var xAxis = d3.svg.axis()
 				.scale(x)
@@ -443,7 +449,7 @@ var renderBarChart = function(filters)
 			var yAxis = d3.svg.axis()
 				.scale(y)
 				.orient("left")
-				.ticks(7);
+				.ticks(10);
 
 			var svg = d3.select("#bars").append("svg:svg")
 				.attr("width", bwidth)
@@ -462,7 +468,7 @@ var renderBarChart = function(filters)
 				.style("text-anchor", "end")
 				.attr("dx", "-.8em")
 				.attr("dy", "-.55em")
-				.attr("transform", "rotate(-75)" );
+				.attr("transform", "rotate(-90)" );
 
 			svg.append("g")
 				.attr("class", "y axis")
@@ -475,12 +481,12 @@ var renderBarChart = function(filters)
 				.text("Total Number");
 
 			//x-axis label
-			svg.append("text")      
+			/*svg.append("text")      
 				.attr("x", bwidth - 50)
 				.attr("y",  bheight )
 				.style("text-anchor", "middle")
 				.attr("class", "axis")
-				.text("Field");
+				.text("Field");*/
 
 			svg.selectAll(".bar")
 				.data(dat)
@@ -488,7 +494,7 @@ var renderBarChart = function(filters)
 				.style("fill", function(d,i) { return color(i)})
 				.attr("class", "bar")
 				.attr("x", function(d) { return x(d.field); })
-				.attr("width", 20)
+				.attr("width", 10)
 				.attr("y", function(d) { return y(d.count); })
 				.attr("height", function(d) { return bheight - y(d.count); });
 		}
