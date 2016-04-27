@@ -73,9 +73,14 @@ ul {
   padding-left: 0px !important;
 }
 
-.nopadding {
+.nopadding{
    padding: 0 !important;
    margin: 0 !important;
+}
+
+.nopadding > div {
+  padding-right: 2px !important;
+  padding-left: 2px !important;
 }
 
 </style>
@@ -89,8 +94,8 @@ ul {
   <h1 style="text-align:center">Visualizing Higher Education
 </h1>
   <div class="row nopadding">
-    <div class="col-sm-12 col-md-3 nopadding">
-      <div class="bg-div"><h4 style="padding-left: 10px">Academic Field Distribution</h4><p id="bars"></p></div>
+    <div class="col-sm-12 col-md-3">
+      <div class="bg-div" id="barchart"><h4 style="padding-left: 10px">Academic Field Distribution</h4><p id="bars"></p></div>
     </div>
     <div class="col-sm-12 col-md-6">
       <div class="bg-div"><h4>Academic Career Track</h4><div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
@@ -427,7 +432,7 @@ var renderBarChart = function(filters)
 
 			var bwidth = windowWidth*.23;
       var bheight = 500;
-      var bmargin = {top: 0, bottom: 200, right: 25, left: 5};
+      var bmargin = {top: 0, bottom: 200, right: 30, left: 2};
 
 			var x = d3.scale.ordinal()
 				.rangeRoundBands([bmargin.left, bwidth-bmargin.right], 0);
