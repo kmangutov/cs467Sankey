@@ -141,6 +141,7 @@ $(document).ready(function() {
     });
     //console.log(JSON.stringify(filters));
     renderWithFilter(filters);
+    renderBarChart(filters);
   });
 
 });
@@ -184,6 +185,8 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
     color = d3.scale.category20();
 var bchartColors = d3.scale.ordinal()
         .range(["#f2767f","#dd6ca8","#9e68ab","#4188c8","#31b99b","#93c43d","#e7cf1b","#f1a31e","#ee6c24","#ef5337","#ce1f35","#552a7d","#184784"]);
+
+var bchartGrey = d3.scale.ordinal().range(["#A9A9A9"])
 // append the svg canvas to the page
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -380,6 +383,7 @@ renderWithFilter([]);
 
 var renderBarChart = function(filters)
 {
+	console.log(JSON.stringify(filters))
     var bwidth = 400;
     var bheight = 400;
 	$("#bars").empty();
@@ -418,14 +422,14 @@ var renderBarChart = function(filters)
 
 		function barChart(dat)
 		{
-			console.log(JSON.stringify(dat));
-      var windowWidth = window.innerWidth
-          || document.documentElement.clientWidth
-          || document.body.clientWidth;
+			//console.log(JSON.stringify(dat));
+			  var windowWidth = window.innerWidth
+				  || document.documentElement.clientWidth
+				  || document.body.clientWidth;
 
 			var bwidth = windowWidth*.23;
-      var bheight = 500;
-      var bmargin = {top: 0, bottom: 200, right: 25, left: 5};
+		  	var bheight = 500;
+		  	var bmargin = {top: 0, bottom: 200, right: 25, left: 5};
 
 			var x = d3.scale.ordinal()
 				.rangeRoundBands([bmargin.left, bwidth-bmargin.right], 0);
@@ -471,24 +475,67 @@ var renderBarChart = function(filters)
 				.style("text-anchor", "end")
 				.text("Total Number");
       
-      svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "end")
-        .attr("y", 3)
-        .attr("x", -220)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
-        .text("Number of Professors");
+			  svg.append("text")
+				.attr("class", "y label")
+				.attr("text-anchor", "end")
+				.attr("y", 3)
+				.attr("x", -220)
+				.attr("dy", ".75em")
+				.attr("transform", "rotate(-90)")
+				.text("Number of Professors");
 
-			svg.selectAll(".bar")
-				.data(dat)
-			  .enter().append("rect")
-				.style("fill", function(d,i) { return bchartColors(i)})
-				.attr("class", "bar")
-				.attr("x", function(d) { return x(d.field); })
-				.attr("width", 10)
-				.attr("y", function(d) { return y(d.count); })
-				.attr("height", function(d) { return bheight - y(d.count); });
+			if (filters.length == 0)
+			{
+				svg.selectAll(".bar")
+					.data(dat)
+				  .enter().append("rect")
+					.style("fill", function(d,i) { return bchartColors(i)})
+					.attr("class", "bar")
+					.attr("x", function(d) { return x(d.field); })
+					.attr("width", 10)
+					.attr("y", function(d) { return y(d.count); })
+					.attr("height", function(d) { return bheight - y(d.count); });
+			}
+			else
+			{
+				var getFilters = function(filter_input)
+				{
+					var result = [];
+
+					for (var i = 0; i < fields.length; i++)
+					{
+						if ($.inArray(fields[i],filter_input) != -1)
+						{
+							result.push(i);
+						}
+					}
+					console.log(JSON.stringify(result));
+					return result;
+				}
+
+				var indicies = getFilters(filters);
+				
+				svg.selectAll(".bar")
+					.data(dat)
+				  .enter().append("rect")
+					.style("fill", function(d,i) 
+						{
+							if ($.inArray(i,indicies) != -1)
+							{
+								return bchartColors(i)
+							}
+							else
+							{
+								return bchartGrey(1)
+							}
+						})
+					.attr("class", "bar")
+					.attr("x", function(d) { return x(d.field); })
+					.attr("width", 10)
+					.attr("y", function(d) { return y(d.count); })
+					.attr("height", function(d) { return bheight - y(d.count); });
+			}
+			
 		}
 
 		barChart(bar_data);
