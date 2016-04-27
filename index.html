@@ -435,13 +435,12 @@ var renderBarChart = function(filters)
 				  || document.body.clientWidth;
 
 			var bwidth = windowWidth*.23;
-<<<<<<< HEAD
+
 		  	var bheight = 500;
+		  	
 		  	var bmargin = {top: 0, bottom: 200, right: 25, left: 5};
-=======
-      var bheight = 500;
-      var bmargin = {top: 0, bottom: 200, right: 30, left: 2};
->>>>>>> origin/master
+      		//var bmargin = {top: 0, bottom: 200, right: 30, left: 2};
+
 
 			var x = d3.scale.ordinal()
 				.rangeRoundBands([bmargin.left, bwidth-bmargin.right], 0);
