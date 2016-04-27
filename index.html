@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>SANKEY Experiment</title>
+<title>PUT TITLE HERE</title>
 <style>
 
 .node rect {
@@ -85,17 +85,15 @@ ul {
 <link href='https://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
 
 <div class="containter">
+  <h1 style="text-align:center">PUT TITLE HERE PLEASE</h1>
   <div class="row">
     <div class="col-sm-12 col-md-3 nopadding">
-      <br><br>
-      <div class="bg-div"><h4 style="padding-left: 10px">Field Distribution</h4><p id="bars"></p></div>
+      <div class="bg-div"><h4 style="padding-left: 10px">Academic Field Distribution</h4><p id="bars"></p></div>
     </div>
     <div class="col-sm-12 col-md-6 nopadding">
-      <br><br>
       <div class="bg-div"><h4>Academic Career Track</h4><div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
     </div>
     <div class="col-sm-12 col-md-3 nopadding">
-      <br><br>
       <div class="bg-div"><h4>Academic Field</h4>
 <script
         src="https://code.jquery.com/jquery-2.2.3.min.js"
@@ -126,10 +124,9 @@ var fields = ["Algorithms & Theory",
 				"Scientific Computing",
 				"Security & Privacy",
 				"Software Engineering"];
-				
+
+
 $(document).ready(function() {
-
-
   var counter = 0;
   fields.forEach(function f(name) {
     $("#filters").append("<li><div class='checkbox'><input type='checkbox' id='a" + counter + "' value='" + name + "'><label for='a" + counter++ + "'>" + name + "</label></div></li>");
@@ -185,7 +182,8 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
     color = d3.scale.category20();
-
+var bchartColors = d3.scale.ordinal()
+        .range(["#f2767f","#dd6ca8","#9e68ab","#4188c8","#31b99b","#93c43d","#e7cf1b","#f1a31e","#ee6c24","#ef5337","#ce1f35","#552a7d","#184784"]);
 // append the svg canvas to the page
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -424,23 +422,16 @@ var renderBarChart = function(filters)
       var windowWidth = window.innerWidth
           || document.documentElement.clientWidth
           || document.body.clientWidth;
-          console.log(windowWidth*.25);
-			
-      var bheight = 500;
-			margin.top = 0;
-			margin.bottom = 200;
-      margin.right = 15;
-      margin.left = 5;
-      var bwidth = windowWidth*.25 - margin.right;
 
-			var color = d3.scale.ordinal()
-				.range(["#f2767f","#dd6ca8","#9e68ab","#4188c8","#31b99b","#93c43d","#e7cf1b","#f1a31e","#ee6c24","#ef5337","#ce1f35","#552a7d","#184784"])
+			var bwidth = windowWidth*.23;
+      var bheight = 500;
+      var bmargin = {top: 0, bottom: 200, right: 25, left: 5};
 
 			var x = d3.scale.ordinal()
-				.rangeRoundBands([margin.left, bwidth], 0);
+				.rangeRoundBands([bmargin.left, bwidth-bmargin.right], 0);
 
 			var y = d3.scale.linear()
-				.range([bheight, margin.bottom]);
+				.range([bheight, bmargin.bottom]);
 
 			var xAxis = d3.svg.axis()
 				.scale(x)
@@ -455,7 +446,7 @@ var renderBarChart = function(filters)
 				.attr("width", bwidth)
 				.attr("height", bheight)
 				.append("svg:g")
-				.attr("transform", "translate(" + (margin.left+30) + "," + (-margin.bottom-10) + ")");
+				.attr("transform", "translate(" + (bmargin.left+30) + "," + (-bmargin.bottom-10) + ")");
 
 			x.domain(dat.map(function(d){return d.field}));
 			y.domain([0, d3.max(dat, function(d) { return d.count; })]);
@@ -479,19 +470,20 @@ var renderBarChart = function(filters)
 				.attr("dy", ".71em")
 				.style("text-anchor", "end")
 				.text("Total Number");
-
-			//x-axis label
-			/*svg.append("text")      
-				.attr("x", bwidth - 50)
-				.attr("y",  bheight )
-				.style("text-anchor", "middle")
-				.attr("class", "axis")
-				.text("Field");*/
+      
+      svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", 3)
+        .attr("x", -220)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Number of Professors");
 
 			svg.selectAll(".bar")
 				.data(dat)
 			  .enter().append("rect")
-				.style("fill", function(d,i) { return color(i)})
+				.style("fill", function(d,i) { return bchartColors(i)})
 				.attr("class", "bar")
 				.attr("x", function(d) { return x(d.field); })
 				.attr("width", 10)
