@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>PUT TITLE HERE</title>
+<title>Visualizing Higher Education
+</title>
 <style>
 
 .node rect {
@@ -72,9 +73,14 @@ ul {
   padding-left: 0px !important;
 }
 
-.nopadding {
+.nopadding{
    padding: 0 !important;
    margin: 0 !important;
+}
+
+.nopadding > div {
+  padding-right: 2px !important;
+  padding-left: 2px !important;
 }
 
 </style>
@@ -85,10 +91,11 @@ ul {
 <link href='https://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
 
 <div class="containter">
-  <h1 style="text-align:center">PUT TITLE HERE PLEASE</h1>
+  <h1 style="text-align:center">Visualizing Higher Education
+</h1>
   <div class="row nopadding">
-    <div class="col-sm-12 col-md-3 nopadding">
-      <div class="bg-div"><h4 style="padding-left: 10px">Academic Field Distribution</h4><p id="bars"></p></div>
+    <div class="col-sm-12 col-md-3">
+      <div class="bg-div" id="barchart"><h4 style="padding-left: 10px">Academic Field Distribution</h4><p id="bars"></p></div>
     </div>
     <div class="col-sm-12 col-md-6">
       <div class="bg-div"><h4>Academic Career Track</h4><div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
@@ -428,8 +435,13 @@ var renderBarChart = function(filters)
 				  || document.body.clientWidth;
 
 			var bwidth = windowWidth*.23;
+<<<<<<< HEAD
 		  	var bheight = 500;
 		  	var bmargin = {top: 0, bottom: 200, right: 25, left: 5};
+=======
+      var bheight = 500;
+      var bmargin = {top: 0, bottom: 200, right: 30, left: 2};
+>>>>>>> origin/master
 
 			var x = d3.scale.ordinal()
 				.rangeRoundBands([bmargin.left, bwidth-bmargin.right], 0);
