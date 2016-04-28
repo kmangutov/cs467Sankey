@@ -1,6 +1,6 @@
 import csv
 
-f = open("E:\HJ\UIUC\CS\CS467\proj_final\data.csv", "r")
+f = open("data.csv", "r")
 data = csv.reader(f)
 
 schema = []
@@ -105,7 +105,7 @@ def writeCsvFile(fname, data, *args, **kwargs):
         mycsv.writerow(row)
 
 
-writeCsvFile("E:\HJ\UIUC\CS\CS467\proj_final\prof_data.csv", prof_data)
+writeCsvFile("prof_data.csv", prof_data)
 
 
 f.close()
