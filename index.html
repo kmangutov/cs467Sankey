@@ -8,6 +8,12 @@ p {
   font: 16px sans-serif;
 }
 
+
+#axis {
+  width: 700px;
+}
+
+
 .node rect {
   cursor: move;
   fill-opacity: .9;
@@ -123,13 +129,30 @@ ul {
 
   <div class="row nopadding">
     <div class="col-sm-12 col-md-3">
-      <div class="bg-div" id="barchart"><h4 style="padding-left: 10px">Academic Field Distribution</h4><p id="bars"></p></div>
+      <div class="bg-div" id="barchart"><h3 style="padding-left: 10px">Academic Field Distribution</h3><p id="bars"></p></div>
     </div>
     <div class="col-sm-12 col-md-6">
-      <div class="bg-div"><h4>Academic Career Track</h4><div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
+      <div class="bg-div"><h3>Academic Career Track</h3>
+
+      <br>
+      <table id="axis">
+        <tr> 
+          <td>
+            <h4>Undergrad</h4>
+          </td>
+          <td>
+            <h4>Graduate</h4>
+          </td>
+          <td>
+            <h4>Teaching</h4> 
+          </td>
+        </tr>
+      </table>
+
+      <div style="overflow:scroll; height:700px"><p id="chart"></p></div></div>
     </div>
     <div class="col-sm-12 col-md-3">
-      <div class="bg-div"><h4>Academic Field</h4>
+      <div class="bg-div"><h3>Academic Field</h3>
 <script
         src="https://code.jquery.com/jquery-2.2.3.min.js"
         integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
